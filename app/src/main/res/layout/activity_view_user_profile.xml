@@ -21,12 +21,13 @@
                 android:scaleType="fitXY"
                 android:layout_height="match_parent"/>
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:padding="8dp"
             android:layout_weight="0.7">
             <LinearLayout
+                android:id="@+id/lyl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -58,11 +59,13 @@
             </LinearLayout>
 
             <ImageView
+
+                android:layout_alignParentEnd="true"
                 android:id="@+id/img_post"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/add"/>
-        </LinearLayout>
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_message" />
+        </RelativeLayout>
     </LinearLayout>
 
 <TextView
@@ -76,8 +79,10 @@
         android:id="@+id/et_message"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:textColor="@color/white"
         android:layout_margin="20dp"/>
     <Button
+        android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

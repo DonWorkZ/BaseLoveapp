@@ -66,14 +66,12 @@ public class Dash_Search extends Fragment {
                     if (count == 0) {
                         Toast.makeText(mContext, "no match", Toast.LENGTH_LONG).show();
                     } else {
-//                        startActivity(new Intent(mContext, ViewUserProfile.class).putExtra("age1", et_age1.getText().toString()));
                         Intent i = new Intent(mContext, ViewUserProfile.class);
                         i.putExtra("AGE1", et_age1.getText().toString());
                         i.putExtra("AGE2", et_age2.getText().toString());
                         i.putExtra("GENDER", etGender.getText().toString());
                         i.putExtra("INTER", etInter.getText().toString());
                         startActivity(i);
-//                        Toast.makeText(getContext(), "DATA will", Toast.LENGTH_SHORT).show();
                     }
 
                 }

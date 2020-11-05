@@ -6,32 +6,40 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class DataBaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "LOVEAPP";
-    private static final String TABLE_CONTACTS = "userdetails";
-    private static final String KEY_ID = "id";
+    private static final String DATABASE_NAME = "LOVEAPP3";
+    private static final String TABLE_CONTACTS = "userdetails2";
+    public static final String KEY_ID = "id";
     public static final String KEY_NAME = "Uname";
     public static final String KEY_AGE = "Uage";
     public static final String KEY_GENDER = "Ugender";
     public static final String KEY_INTER = "Uinter";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_MSG = "Umsg";
+
 
     private static String sqLiteDatabase_PATH = "";
     private static SQLiteDatabase sqLiteDatabase;
 
 
     String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
-            + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " VARCHAR,"
+            + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_NAME + " VARCHAR,"
             + KEY_AGE + " VARCHAR,"
             + KEY_GENDER + " VARCHAR,"
-            + KEY_IMAGE + " BLOB ,"
-            + KEY_INTER + " VARCHAR"
+            + KEY_INTER + " VARCHAR,"
+            + KEY_IMAGE + " BLOB,"
+            + KEY_MSG + " VARCHAR"
             + ")";
 
 
@@ -68,30 +76,24 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                            String _Ugender,
                            String _Uinter,
                            byte[] _image) {
-        openDataBase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, _Uname);
-        values.put(KEY_AGE, _Uage);
-        values.put(KEY_GENDER, _Ugender);
-        values.put(KEY_INTER, _Uinter);
-        values.put(KEY_IMAGE, _image);
 
-        sqLiteDatabase.insert(TABLE_CONTACTS, null, values);
-        sqLiteDatabase.close();
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_NAME, _Uname);
+        contentValues.put(KEY_AGE, _Uage);
+        contentValues.put(KEY_GENDER, _Ugender);
+        contentValues.put(KEY_INTER, _Uinter);
+        contentValues.put(KEY_IMAGE, _image);
+        contentValues.put(KEY_MSG,"");
+        db.insert(TABLE_CONTACTS, null, contentValues);
 
-        Log.e("INSERTDATA", _Uname + " : " + _Uage + " : " + _Ugender + " : " + _Uinter + " : ");
 
     }
 
     public Cursor getCarDetails() {
-        openDataBase();
-        String selectQuery = "SELECT * FROM " + TABLE_CONTACTS;
-        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        sqLiteDatabase.close();
-        return cursor;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + TABLE_CONTACTS , null );
+        return res;
     }
 
 
@@ -101,7 +103,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         try {
             String query = "SELECT count(*) AS count FROM " + TABLE_CONTACTS
                     + " WHERE " + KEY_GENDER + " LIKE '%" + gender + "%'"
-//                    + " AND " + KEY_AGE + " < " + Integer.parseInt(age2)
                     + " AND " + KEY_INTER + " LIKE '%" + inter + "%'";
 
             Log.e("QUERY", query);
@@ -122,21 +123,27 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
     public Cursor getCarDetailsSingle(String gender, String inter) {
-        openDataBase();
-//        String selectQuery = "SELECT * FROM " + TABLE_CONTACTS
-//                + " WHERE " + KEY_NAME + " LIKE '%" + car_name + "%'";
-        String query = "SELECT count(*) AS count FROM " + TABLE_CONTACTS
-                + " WHERE " + KEY_GENDER + " LIKE '%" + gender + "%'"
-//                + " AND " + KEY_AGE + " > " + age1
-//                + " AND " + KEY_AGE + " < " + age2
-                + " AND " + KEY_INTER + " LIKE '%" + inter + "%'"
-                + " LIMIT 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select " + KEY_ID +", * from " +
+                        TABLE_CONTACTS + " WHERE "+
+                        KEY_GENDER + " LIKE '" + gender + "'"
 
-        Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        sqLiteDatabase.close();
-        return cursor;
+                + " LIMIT 1"
+                , null );
+
+        Log.e("getCarDetailsSingle", "select " + KEY_ID +", * from " +
+                TABLE_CONTACTS + " WHERE "+
+                KEY_GENDER + " LIKE '" + gender + "'"
+
+                + " LIMIT 1");
+        return res;
     }
+
+    public void updateData(String message, String uname){
+        openDataBase();
+        SQLiteDatabase database = getWritableDatabase();
+//        database.execSQL("UPDATE " + TABLE_CONTACTS + " SET " + KEY_MSG + " = '" + message + "' WHERE " + KEY_ID + " = " +  "" + uid + "");
+        database.execSQL("UPDATE "+TABLE_CONTACTS+" SET Umsg = "+"'"+message+"' "+  "WHERE Uname = "+"'"+uname+"'");
+    }
+
 }

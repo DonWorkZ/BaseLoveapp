@@ -2,10 +2,12 @@ package com.school.loveapp;
 
 public class USERList {
 
+    private String userID;
     private String userName;
     private String userAGE;
     private String userGender;
     private String userInter;
+    private String userMSG;
     private byte[] userImage;
 
     public String getUserName() {
@@ -46,5 +48,21 @@ public class USERList {
 
     public void setUserImage(byte[] userImage) {
         this.userImage = userImage;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getUserMSG() {
+        return userMSG;
+    }
+
+    public void setUserMSG(String userMSG) {
+        this.userMSG = userMSG;
     }
 }

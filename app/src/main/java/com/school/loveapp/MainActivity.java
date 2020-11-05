@@ -47,11 +47,8 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 if (tab.getPosition() == 1){
-//                    tabLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gray));
                 } else if (tab.getPosition() == 2){
-//                    tabLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gray));
                 }else if (tab.getPosition() == 0){
-//                    tabLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gray));
                 }
             }
 
